@@ -2,12 +2,10 @@ import {useEffect, useState} from "react";
 import {Todo, allPossibleStatus} from "./assets/todos.tsx";
 import axios from "axios";
 import TodoColumn from "./components/TodoColumn.tsx";
+import AddTodo from "./components/AddTodo.tsx";
 
 export default function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
-
-
-
 
   function getTodos() {
     axios.get('/api/todo')
@@ -31,6 +29,7 @@ export default function App() {
   return (
       <>
         <h1>Todos</h1>
+          <AddTodo onTodoItemChange={getTodos}/>
         {
           allPossibleStatus.map(status => {
             const filteredTodos = todos.filter(todo => todo.status === status)
