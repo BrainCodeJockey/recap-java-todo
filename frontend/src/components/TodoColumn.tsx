@@ -9,8 +9,11 @@ type TodoColumnProps = {
 }
 export default function TodoColumn(props: TodoColumnProps) {
     return (<>
-            <h2>{props.status.toLowerCase()}</h2>
+
             <section>
+
+                <h2>{props.status.toLowerCase()}</h2>
+
                 {
                     props.todos.map(todo =>
                         <TodoCard
