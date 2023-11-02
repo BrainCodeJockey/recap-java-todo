@@ -1,5 +1,7 @@
-import {Todo, TodoStatus} from "../assets/todos.tsx";
+import {Todo, TodoStatus, translateStatus} from "../assets/todos.tsx";
 import TodoCard from "./TodoCard.tsx";
+import styled from 'styled-components';
+
 
 type TodoColumnProps = {
     todos: Todo[],
@@ -10,10 +12,8 @@ type TodoColumnProps = {
 export default function TodoColumn(props: TodoColumnProps) {
     return (<>
 
-            <section>
-
-                <h2>{props.status.toLowerCase()}</h2>
-
+            <TodoColumnContainer>
+                <StyleHeader>{translateStatus(props.status)}</StyleHeader>
                 {
                     props.todos.map(todo =>
                         <TodoCard
@@ -21,7 +21,18 @@ export default function TodoColumn(props: TodoColumnProps) {
                             key={todo.id}
                             onTodoItemChange={props.onTodoItemChange}/>)
                 }
-            </section>
+            </TodoColumnContainer>
         </>
     );
 }
+
+const TodoColumnContainer = styled.section`
+  flex: 1;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+`;
+
+const StyleHeader = styled.h2`
+    text-align: center;
+`;

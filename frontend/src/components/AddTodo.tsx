@@ -1,35 +1,65 @@
-import {ChangeEvent, useState} from "react";
-import axios from "axios";
-import {Todo} from "../assets/todos.tsx";
+import { ChangeEvent, FormEvent, useState } from 'react';
+import axios from 'axios';
+import { Todo } from '../assets/todos';
+import styled from "styled-components";
 
 type AddTodoProps = {
-    onTodoItemChange: () => void,
-}
+    onTodoItemChange: () => void;
+};
 
-export default function AddTodo(props: AddTodoProps) {
-    const [text, setText] = useState("");
+export default function AddTodo({ onTodoItemChange }: AddTodoProps) {
+    const [text, setText] = useState('');
 
-    function changeText(event: ChangeEvent<HTMLInputElement>) {
-        setText(event.target.value)
-    }
+    const changeText = (event: ChangeEvent<HTMLInputElement>) => {
+        setText(event.target.value);
+    };
 
-    function saveTodo() {
-        if(text.trim() === "") {
+    const saveTodo = (event: FormEvent) => {
+        event.preventDefault();
+        if (text.trim() === '') {
             return;
         }
-        axios.post('/api/todo',
-            {
+        axios
+            .post('/api/todo', {
                 description: text,
-                status: "OPEN",
+                status: 'OPEN',
             } as Todo)
-            .then(props.onTodoItemChange)
-        setText("");
-    }
+            .then(onTodoItemChange);
+        setText('');
+    };
 
     return (
-      <form onSubmit={saveTodo}>
-          <input type="text" placeholder={"Beschreibung"} value={text} onInput={changeText}/>
-          <button>Speichern</button>
-      </form>
+        <StyledFormContainer onSubmit={saveTodo}>
+            <StyledInput type="text" placeholder="Beschreibung" value={text} onChange={changeText} />
+            <StyledButton type="submit">Speichern</StyledButton>
+        </StyledFormContainer>
     );
 }
+
+const StyledFormContainer = styled.form`
+  display: block;
+  text-align: center;
+`;
+
+const StyledInput = styled.input`
+    display: block;
+    margin: 0 auto 10px;
+    padding: 8px;
+    width: 100%;
+    border: 1px solid #ccc;
+`;
+
+const StyledButton = styled.button`
+    display: block;
+    margin: 0 auto;
+    padding: 8px;
+    width: 100%;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #45a049;
+    }
+`;
